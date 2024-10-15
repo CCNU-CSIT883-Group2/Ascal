@@ -5,6 +5,8 @@ description = ""
 authors = ["Lzzzt <liuzitao0123@gmail.com>"]
 readme = "README.md"
 
+packages = [{ include = "ascal" }]
+
 [tool.poetry.dependencies]
 python = "^3.12"
 openai = "^1.51.1"
