@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ascal"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["Lzzzt <liuzitao0123@gmail.com>"]
 readme = "README.md"
