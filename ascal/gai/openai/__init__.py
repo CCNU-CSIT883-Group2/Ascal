@@ -1,32 +1,23 @@
+"""
+GAI Client that shares OpenAI like interface.
+"""
+
 import openai
 
-from dataclasses import dataclass
-from .gai_instance import Instance
+from typing import Union
+from ..gai_instance import Instance
+from .chatgpt import ChatGPTConfig
+from .kimi import KimiConfig
+
+OpenAIConfig = Union[ChatGPTConfig, KimiConfig]
 
 
-@dataclass
-class ChatGPTConfig:
-    api_key: str
-    model: str
-    endpoint: str
-
-    def __init__(
-        self,
-        api_key: str,
-        model: str,
-        endpoint: str = "https://api.openai.com/v1/chat/completions",
-    ):
-        self.api_key = api_key
-        self.model = model
-        self.endpoint = endpoint
-
-
-class ChatGPT(Instance):
-    config: ChatGPTConfig
+class OpenAI(Instance):
+    config: OpenAIConfig
     history: list[dict[str, str]]
     client: openai.OpenAI
 
-    def __init__(self, config: ChatGPTConfig):
+    def __init__(self, config: OpenAIConfig):
         self.config = config
         self.history = []
         self.client = openai.OpenAI(
@@ -44,7 +35,7 @@ class ChatGPT(Instance):
             model=self.config.model,
             response_format={"type": "json_object"},
             messages=self.history,  # type: ignore
-            max_tokens=2048,
+            max_tokens=self.config.max_token,
             temperature=0.5,
         )
 
@@ -54,3 +45,6 @@ class ChatGPT(Instance):
 
         self.history.append({"role": "assistant", "content": content})
         return content
+
+
+__all__ = ["OpenAI", "ChatGPTConfig", "KimiConfig"]

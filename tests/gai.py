@@ -1,12 +1,19 @@
+import os
+
 from ascal import gai, generator
+from dotenv import load_dotenv
 
-config = gai.TestConfig()
+load_dotenv()
 
-client = gai.Client(config)
-
-generator = generator.ChoiceQuestionGenerator(
-    "subject", "tag", generator.ChoiceType.Single, client
+config = gai.KimiConfig(
+    api_key=str(os.getenv("KIMI_API")),
+    model="moonshot-v1-auto",
 )
 
-for question in generator.generate(5):
-    print(question)
+client = gai.Client(config)
+generator = generator.ChoiceQuestionGenerator(
+    "English", "noun", generator.ChoiceType.Multi, client
+)
+
+for question in generator.generate(1):
+    print(question.model_dump_json(indent=2))
