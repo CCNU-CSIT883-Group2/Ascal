@@ -16,6 +16,7 @@ class OpenAI(Instance):
     config: OpenAIConfig
     history: list[dict[str, str]]
     client: openai.OpenAI
+    token_used: int = 0
 
     def __init__(self, config: OpenAIConfig):
         self.config = config
@@ -40,9 +41,12 @@ class OpenAI(Instance):
         )
 
         content = response.choices[0].message.content
-        if content is None:
-            raise ValueError("Response content is None")
+        assert content is not None, ValueError("Response content is None")
 
+        usage = response.usage
+        assert usage is not None, ValueError("Response usage is None")
+
+        self.token_used += usage.total_tokens
         self.history.append({"role": "assistant", "content": content})
         return content
 

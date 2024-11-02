@@ -1,3 +1,3 @@
-from .generator import ChoiceQuestionGenerator, ChoiceType
+from .generator import ChoiceQuestionGenerator, ChoiceType, BlankQuestionGenerator
 
-__all__ = ["ChoiceQuestionGenerator", "ChoiceType"]
+__all__ = ["ChoiceQuestionGenerator", "ChoiceType", "BlankQuestionGenerator"]
